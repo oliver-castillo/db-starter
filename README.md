@@ -8,7 +8,8 @@ Start and stop PostgreSQL database engine from the application.
 
 ## Installation
 
-1. Download the latest release from the [releases page](https://github.com/db-starter/db-starter/releases).
+1. Download the latest release from the [releases page](https://github.com/oliver-castillo/db-starter/releases/tag/JAR)
+   or [here](https://github.com/oliver-castillo/db-starter/releases/download/JAR/db-starter.jar).
 2. Open the terminal and navigate to the directory where you downloaded the file.
 3. Run the following command to start the application:
 
