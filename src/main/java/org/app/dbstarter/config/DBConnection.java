@@ -1,21 +1,34 @@
 package org.app.dbstarter.config;
 
-import org.app.dbstarter.service.PostgreSQLService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.*;
 
 public class DBConnection {
-    private final Logger logger = LoggerFactory.getLogger(PostgreSQLService.class);
+    public void createTable() {
+        String sql_1 = "create table if not exists database_info(" +
+                "id integer not null constraint database_info_pk primary key autoincrement," +
+                "name TEXT not null unique," +
+                "path TEXT)";
+        String sql_2 = "INSERT OR IGNORE INTO database_info (name, path) VALUES ('POSTGRESQL', '')";
+        Connection conn = getConnection();
+        try {
+            Statement statement = conn.createStatement();
+            statement.execute(sql_1);
+            statement.execute(sql_2);
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public Connection getConnection() {
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:database.db";
             conn = DriverManager.getConnection(url);
+            System.out.println("Connected to database");
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            System.out.println(e.getMessage());
         }
         return conn;
     }
@@ -29,7 +42,7 @@ public class DBConnection {
             statement.close();
             conn.close();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -46,7 +59,7 @@ public class DBConnection {
             conn.close();
             return path;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            System.out.println(e.getMessage());
         }
         return null;
     }

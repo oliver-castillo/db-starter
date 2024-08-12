@@ -4,7 +4,6 @@ module org.app.dbstarter {
     requires org.controlsfx.controls;
     requires java.desktop;
     requires java.sql;
-    requires org.slf4j;
 
 
     opens org.app.dbstarter to javafx.fxml;

@@ -26,9 +26,11 @@ public class IndexController implements Initializable {
 
     public void onSwitchPostgreSQL() {
         if (switchPostgreSQL.isSelected()) {
-            postgreSQLService.startPostgres(textAreaResult);
+            System.out.println("Starting...");
+            postgreSQLService.start(textAreaResult);
         } else {
-            postgreSQLService.stopPostgres(textAreaResult);
+            System.out.println("Stopping...");
+            postgreSQLService.stop(textAreaResult);
         }
     }
 
@@ -38,12 +40,12 @@ public class IndexController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        textAreaResult.setEditable(false);
         textFieldPath.setText(dbConnection.getPostgreSQLPath());
     }
 
     public void onClose() {
-        //postgreSQLService.stopPostgres(textAreaResult);
-        System.out.println("Exiting...");
+        postgreSQLService.stop(null);
         System.exit(0);
     }
 }

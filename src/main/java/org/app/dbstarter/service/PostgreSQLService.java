@@ -2,8 +2,6 @@ package org.app.dbstarter.service;
 
 import javafx.scene.control.TextArea;
 import org.app.dbstarter.config.DBConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.BufferedReader;
@@ -12,10 +10,9 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class PostgreSQLService {
-    private final Logger logger = LoggerFactory.getLogger(PostgreSQLService.class);
     private final DBConnection dbConnection = new DBConnection();
 
-    public void startPostgres(TextArea textAreaResult) {
+    public void start(TextArea textAreaResult) {
         SwingWorker<Void, String> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
@@ -41,7 +38,7 @@ public class PostgreSQLService {
             @Override
             protected void process(List<String> chunks) {
                 for (String line : chunks) {
-                    logger.info(line);
+                    System.out.println(line);
                 }
             }
 
@@ -52,7 +49,7 @@ public class PostgreSQLService {
         worker.execute();
     }
 
-    public void stopPostgres(TextArea textAreaResult) {
+    public void stop(TextArea textAreaResult) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "pg_ctl",
@@ -63,15 +60,18 @@ public class PostgreSQLService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                textAreaResult.appendText(line + "\n");
+                if (textAreaResult != null) {
+                    textAreaResult.appendText(line + "\n");
+                }
+                System.out.println(line);
             }
             int exitCode = process.waitFor();
-            logger.info("Process terminated with exit code: {}", exitCode);
+            System.out.println("Process terminated with exit code: " + exitCode);
         } catch (InterruptedException ex) {
-            logger.info(ex.getMessage());
+            System.out.println(ex.getMessage());
             Thread.currentThread().interrupt();
         } catch (IOException ex) {
-            logger.info(ex.getMessage());
+            System.out.println(ex.getMessage());
         }
     }
 }
